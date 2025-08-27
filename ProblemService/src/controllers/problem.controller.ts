@@ -5,7 +5,7 @@ import { ProblemRepository } from "../repository/problem.repository";
 const problemRepository = new ProblemRepository()
 const problemService = new ProblemService(problemRepository);
 
-export const ProblemRouter = {
+export const ProblemController = {
 
     async createProblem(req:Request, res:Response):Promise<void> {
 
