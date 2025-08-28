@@ -58,9 +58,9 @@ const problemSehema = new mongoose.Schema<IProblem> ({
     timestamps: true,
     toJSON: {
         transform: (_,record) =>{
-            delete (record as any).v;
+            delete (record as any).__v;
             record.id = record._id;
-            delete record.id;
+            delete record._id;
             return record;
         }
     }

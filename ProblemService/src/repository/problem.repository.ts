@@ -1,3 +1,4 @@
+import logger from "../config/logger.config";
 import { IProblem, Problem } from "../models/problem.model";
 
 export interface IProblemRepositiry {
@@ -18,6 +19,7 @@ export class ProblemRepository implements IProblemRepositiry {
   
   async createProblem(problem: Partial<IProblem>): Promise<IProblem> {
     const newProblem = new Problem(problem);
+    logger.info("Problem created successfully")
     return await newProblem.save();
   }
 
