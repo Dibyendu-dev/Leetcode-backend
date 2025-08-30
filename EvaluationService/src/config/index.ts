@@ -17,7 +17,7 @@ function loadEnv() {
 loadEnv();
 
 export const serverConfig: ServerConfig = {
-    PORT: Number(process.env.PORT) || 3001,
+    PORT: Number(process.env.PORT) || 3003,
     REDIS_PORT: process.env.REDIS_PORT ? Number(process.env.REDIS_PORT) :6379,
     REDIS_HOST: process.env.REDIS_HOST || 'localhost',
     PROBLEM_SERVICE:process.env.PROBLEM_SERVICE || "http://localhost:3000/api/v1",
