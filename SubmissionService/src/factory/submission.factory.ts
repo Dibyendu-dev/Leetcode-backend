@@ -2,30 +2,33 @@ import { SubmissionController } from "../controllers/submission.controller";
 import { SubmissionRepository } from "../repository/submission.repository";
 import { SubmissionService } from "../service/submission.service";
 
-
 export class SubmissionFactory {
-    private static submissionRepository: SubmissionRepository;
-    private static submissionService: SubmissionService;
-    private static submissionController: SubmissionController;
+  private static submissionRepository: SubmissionRepository;
+  private static submissionService: SubmissionService;
+  private static submissionController: SubmissionController;
 
-    static getSubmissionRepository():SubmissionRepository {
-        if(!this.submissionRepository){
-            this.submissionRepository = new SubmissionRepository()
-        }
-        return this.submissionRepository
+  static getSubmissionRepository(): SubmissionRepository {
+    if (!this.submissionRepository) {
+      this.submissionRepository = new SubmissionRepository();
     }
+    return this.submissionRepository;
+  }
 
-     static getSubmissionService():SubmissionService {
-        if(!this.submissionService){
-            this.submissionService = new SubmissionService(this.getSubmissionRepository())
-        }
-        return this.submissionService
+  static getSubmissionService(): SubmissionService {
+    if (!this.submissionService) {
+      this.submissionService = new SubmissionService(
+        this.getSubmissionRepository()
+      );
     }
+    return this.submissionService;
+  }
 
-     static getSubmissionController():SubmissionController {
-        if(!this.submissionController){
-            this.submissionController = new SubmissionController(this.getSubmissionService())
-        }
-        return this.submissionController
+  static getSubmissionController(): SubmissionController {
+    if (!this.submissionController) {
+      this.submissionController = new SubmissionController(
+        this.getSubmissionService()
+      );
     }
+    return this.submissionController;
+  }
 }

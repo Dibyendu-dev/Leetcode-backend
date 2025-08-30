@@ -1,12 +1,13 @@
 import { IProblemDetails } from "../api/problem.api";
 import logger from "../config/logger.config";
+import { SubmissionLanguage } from "../model/submission.model";
 import { submissionQueue } from "../queues/submission.queue";
 
 export interface ISubmissionJob {
   submissionId: string;
   problem: IProblemDetails;
   code: string;
-  language: string;
+  language: SubmissionLanguage;
 }
 
 export async function addSubmissionJob(
