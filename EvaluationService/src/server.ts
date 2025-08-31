@@ -7,6 +7,8 @@ import logger from './config/logger.config';
 import { attachCorrelationIdMiddleware } from './middlewares/correlation.middleware';
 import { startWorkers } from './worker/evalueation.worker';
 import { pullAllImage} from './utils/container/pullimage.util';
+import { createNewDockerContainer } from './utils/container/createContainer';
+import { PYTHON_IMAGE } from './utils/constant';
 const app = express();
 
 app.use(express.json());
@@ -35,4 +37,10 @@ app.listen(serverConfig.PORT, async() => {
     logger.info("worker started successfully");
     await pullAllImage();
     console.log("image pulled successfully")
+
+    // await createNewDockerContainer({
+    //     imageName: PYTHON_IMAGE,
+    //     cmdExexutable: ['/bin/bash','-c','tail -f /var/log/dmesg'],
+    //     memoryLimit: 1024*1024*1024
+    // })
 });
