@@ -7,8 +7,7 @@ import logger from './config/logger.config';
 import { attachCorrelationIdMiddleware } from './middlewares/correlation.middleware';
 import { startWorkers } from './worker/evalueation.worker';
 import { pullAllImage} from './utils/container/pullimage.util';
-import { createNewDockerContainer } from './utils/container/createContainer';
-import { PYTHON_IMAGE } from './utils/constant';
+ 
 const app = express();
 
 app.use(express.json());
