@@ -5,33 +5,45 @@ import { getRedisConnObject } from "../config/redis.config";
 import { EvaluationJob, EvaluationResult, TestCase } from "../interface/evaluation.interface";
 import { runCode } from "../utils/container/codeRunner.util";
 import { language_config } from "../config/language.config";
+import { updateSubmission } from "../api/submission.api";
 
 function matchTestcasesWithResults(testcases: TestCase[], results: EvaluationResult[]){
 
     const output: Record<string, string> = {};
 
     if (results.length !== testcases.length){
-        console.log("WA");
+        console.log("WA (mismatch in testcase count)");
         return;
     }
 
-    testcases.map((testcase,index) =>{
-        let retval = '';
-        if(results[index].status === "time_limit_exceeded"){
-            retval= "TLE";
-        } else if(results[index].status === "failed") {
+    testcases.forEach((testcase, index) => {
+        let retval = "";
+        const result = results[index];
+
+        if (result.status === "time_limit_exceeded") {
+            retval = "TLE";
+        } else if (result.status === "failed") {
             retval = "Error";
         } else {
-            if(results[index].status === testcase.output){
+            const expected = testcase.output ?? "";
+            const actual = result.output ?? "";
+
+            if (normalizeOutput(actual) === normalizeOutput(expected)) {
                 retval = "AC";
             } else {
-                retval = "WA"
+                retval = "WA";
             }
         }
 
-        console.log("retval",retval);
+        console.log(`Testcase ${testcase._id}: expected=${testcase.output}, actual=${results[index].output}, verdict=${retval}`);
         output[testcase._id] = retval;
-    })
+    });
+
+    return output;
+}
+
+function normalizeOutput(output: string): string {
+    return output.trim().replace(/\r\n/g, "\n");
 }
 
 async function setupEvaluationWorker() {
@@ -57,8 +69,9 @@ async function setupEvaluationWorker() {
             console.log("testcasesRunnerResult", testcasesRunnerResult);
 
             const output = matchTestcasesWithResults(data.problem.testcases, testcasesRunnerResult);
-            console.log("output",output);
+            console.log("output",output);  
 
+            await updateSubmission(data.submissionId, "completed", output  || {})
 
         } catch (error) {
             logger.error(`evaluation job failed: ${job}`, error);

@@ -4,7 +4,7 @@ import logger from "../config/logger.config";
 import { InternalServerError } from "../utils/errors/app.error";
 
 
-export async function updateSubmission(submissionId: string, status:string, output: Record<string, string>) {
+export async function updateSubmission(submissionId: string, status:string, output: Record<string,string>) {
 
    try {
     const url = `${serverConfig.SUBMISSION_SERVICE}/submission/${submissionId}/status`;
