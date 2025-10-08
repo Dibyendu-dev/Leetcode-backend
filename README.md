@@ -2,8 +2,6 @@
 
 # LeetCode Backend System
 
-A comprehensive microservice-based backend system for a LeetCode-style coding platform that manages problems, handles code submissions, and evaluates solutions using Docker containers.
-
 ## 🚀 Project Overview
 
 This project implements a distributed architecture consisting of three core microservices that work together to provide a complete coding platform experience. The system enables users to browse coding problems, submit solutions, and receive real-time evaluation results with detailed feedback.
