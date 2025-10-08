@@ -1,0 +1,90 @@
+LeetCode Backend System Architecture Diagram
+============================================
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    LeetCode Backend System                     │
+│                     (Microservices Architecture)               │
+└─────────────────────────────────────────────────────────────────┘
+
+┌─────────────────┐    HTTP/REST     ┌─────────────────┐
+│   ProblemService │ ◄──────────────► │ SubmissionService│
+│                 │                  │                 │
+│ • CRUD Problems │                  │ • Handle Submits│
+│ • Search & Filter│                  │ • Queue Jobs    │
+│ • Markdown Sanit│                  │ • Track Status  │
+│ • Test Cases    │                  │ • API Gateway   │
+└─────────────────┘                  └─────────────────┘
+         │                                    │
+         │ MongoDB                            │ MongoDB
+         ▼                                    ▼
+┌─────────────────┐                  ┌─────────────────┐
+│   Problem DB    │                  │ Submission DB   │
+│                 │                  │                 │
+│ • Problem Data  │                  │ • Submission    │
+│ • Test Cases    │                  │   History       │
+│ • Metadata      │                  │ • Status Track  │
+│ • Editorial     │                  │ • Results       │
+└─────────────────┘                  └─────────────────┘
+                                              │
+                                              │ Redis Queue
+                                              ▼
+                                     ┌─────────────────┐
+                                     │   Redis Queue   │
+                                     │                 │
+                                     │ • BullMQ Jobs   │
+                                     │ • Async Process │
+                                     │ • Retry Logic   │
+                                     └─────────────────┘
+                                              │
+                                              │ Job Processing
+                                              ▼
+                                     ┌─────────────────┐
+                                     │EvaluationService│
+                                     │                 │
+                                     │ • Execute Code  │
+                                     │ • Run Test Cases│
+                                     │ • Docker Contain│
+                                     │ • Resource Limit│
+                                     └─────────────────┘
+                                              │
+                                              │ Docker API
+                                              ▼
+                                     ┌─────────────────┐
+                                     │  Docker Engine  │
+                                     │                 │
+                                     │ • Python Runtime│
+                                     │ • C++ Compiler  │
+                                     │ • Isolated Env  │
+                                     │ • Security      │
+                                     └─────────────────┘
+
+Data Flow:
+----------
+1. User submits code → SubmissionService
+2. SubmissionService validates problem → ProblemService
+3. Submission queued → Redis Queue
+4. EvaluationService processes job → Docker Container
+5. Results returned → SubmissionService → User
+
+Key Features:
+-------------
+✓ Microservices Architecture
+✓ Asynchronous Processing
+✓ Docker-based Code Execution
+✓ Redis Message Queuing
+✓ MongoDB Data Persistence
+✓ Multi-language Support (Python, C++)
+✓ Resource Limits & Security
+✓ Comprehensive Logging
+✓ API Versioning
+✓ Error Handling & Retry Logic
+
+Technology Stack:
+----------------
+• Node.js + TypeScript
+• Express.js (REST APIs)
+• MongoDB (Database)
+• Redis + BullMQ (Queue)
+• Docker (Code Execution)
+• Winston (Logging)
+• Zod (Validation)
