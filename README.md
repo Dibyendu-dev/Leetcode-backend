@@ -1,6 +1,6 @@
 ![LeetCode](snaps/leetcode.png)
 
-# LeetCode Backend System
+# Online Judge
 
 ## 🚀 Project Overview
 
